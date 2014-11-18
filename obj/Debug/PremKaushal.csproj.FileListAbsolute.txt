@@ -19,6 +19,5 @@ c:\users\subhash kaushal\documents\visual studio 2012\Projects\PremKaushal\PremK
 c:\users\subhash kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Web.WebPages.xml
 c:\users\subhash kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Web.WebPages.Deployment.xml
 c:\users\subhash kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Web.WebPages.Razor.xml
-c:\users\subhash kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\obj\Debug\PremKaushal.csprojResolveAssemblyReference.cache
 c:\users\subhash kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\obj\Debug\PremKaushal.dll
 c:\users\subhash kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\obj\Debug\PremKaushal.pdb
