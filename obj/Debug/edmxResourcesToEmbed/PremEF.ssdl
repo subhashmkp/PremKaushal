@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PremKaushalModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="PremKaushalModelStoreContainer">
+    <EntitySet Name="Answer" EntityType="PremKaushalModel.Store.Answer" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Contact" EntityType="PremKaushalModel.Store.Contact" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Log" EntityType="PremKaushalModel.Store.Log" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Message" EntityType="PremKaushalModel.Store.Message" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Question" EntityType="PremKaushalModel.Store.Question" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Answer_Question" Association="PremKaushalModel.Store.FK_Answer_Question">
+      <End Role="Question" EntitySet="Question" />
+      <End Role="Answer" EntitySet="Answer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Message_Contact" Association="PremKaushalModel.Store.FK_Message_Contact">
+      <End Role="Contact" EntitySet="Contact" />
+      <End Role="Message" EntitySet="Message" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Question_Contact" Association="PremKaushalModel.Store.FK_Question_Contact">
+      <End Role="Contact" EntitySet="Contact" />
+      <End Role="Question" EntitySet="Question" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Answer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Answer" Type="text" />
+    <Property Name="Qid" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Contact">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="Email" Type="varchar" MaxLength="400" />
+    <Property Name="ContactNo" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Log">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="varchar" MaxLength="10" />
+    <Property Name="Msg" Type="text" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Msg" Type="text" />
+    <Property Name="Cid" Type="int" />
+  </EntityType>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Subject" Type="varchar" MaxLength="500" />
+    <Property Name="Question" Type="text" />
+    <Property Name="CId" Type="int" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Answer_Question">
+    <End Role="Question" Type="PremKaushalModel.Store.Question" Multiplicity="1" />
+    <End Role="Answer" Type="PremKaushalModel.Store.Answer" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Answer">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Message_Contact">
+    <End Role="Contact" Type="PremKaushalModel.Store.Contact" Multiplicity="0..1" />
+    <End Role="Message" Type="PremKaushalModel.Store.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Contact">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="Cid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Question_Contact">
+    <End Role="Contact" Type="PremKaushalModel.Store.Contact" Multiplicity="1" />
+    <End Role="Question" Type="PremKaushalModel.Store.Question" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Contact">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Question">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="sp_insertLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Type" Type="varchar" Mode="In" />
+    <Parameter Name="Msg" Type="text" Mode="In" />
+  </Function>
+  <Function Name="sp_insertMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Name" Type="varchar" Mode="In" />
+    <Parameter Name="Msg" Type="text" Mode="In" />
+    <Parameter Name="Email" Type="varchar" Mode="In" />
+    <Parameter Name="Contact" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="sp_insertQuestion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Name" Type="varchar" Mode="In" />
+    <Parameter Name="Subject" Type="varchar" Mode="In" />
+    <Parameter Name="Question" Type="text" Mode="In" />
+    <Parameter Name="Email" Type="varchar" Mode="In" />
+    <Parameter Name="Contact" Type="varchar" Mode="In" />
+  </Function>
+</Schema>

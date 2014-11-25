@@ -8,60 +8,76 @@
     @Scripts.Render("~/bundles/modernizer")*@
     <link rel="icon" href="~/Content/images/favicon.png">
     <link href="~/Content/css/bootstrap.css" rel="stylesheet" />
-
-</head>
-<body>
-    <div class="navbar-wrapper">
-        <div class="container">
-
-            <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="Home">Prem Kaushal</a>
-                    </div>
-                    <div id="navbar" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About Us", "Index", "About")</li>
-                            <li class="dropdown">
-                                <a href="Books" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Books <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li class="dropdown-header">Hindi</li>
-                                    <li>@Html.ActionLink("Aap Kar Sakte Hai Chamatkar", "Index", "Books")</li>
-                                    <li class="divider"></li>
-                                    <li class="dropdown-header">English</li>
-                                </ul>
-                            </li>
-                            <li>@Html.ActionLink("Seminars", "Index", "Seminars")</li>
-                            <li>@Html.ActionLink("Legal Advice", "Index", "LegalAdvice")</li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-        </div>
-    </div>
-
-
-    <div id="body">
-        @RenderBody()
-        @*@Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)*@
-    </div>
-    <div class="container marketing">
-        <!-- FOOTER -->
-        <footer>
-            <p class="pull-right"><a href="#">Back to top</a></p>
-            <p><span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span> 2014 Prem Kaushal. &middot; Developed By <a href="#">Subhash Kaushal</a></p>
-        </footer>
-    </div>
+    @RenderSection("Styles", false)
     <script src="~/Scripts/jquery-2.1.1.min.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-</body>
+</head>
+    <body>
+        <!-- Facebook SDK -->
+        <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=789144051138803&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+        <div class="navbar-wrapper">
+            <div class="container">
+
+                <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="Home">Prem Kaushal</a>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                                <li>@Html.ActionLink("About Us", "Index", "About")</li>
+                                <li class="dropdown">
+                                    <a href="Books" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Books <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li class="dropdown-header">Hindi</li>
+                                        <li>@Html.ActionLink("Aap Kar Sakte Hai Chamatkar", "Index", "Books")</li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-header">English</li>
+                                    </ul>
+                                </li>
+                                <li>@Html.ActionLink("Seminars", "Index", "Seminars")</li>
+                                <li>@Html.ActionLink("Legal Advice", "Index", "LegalAdvice")</li>
+                                <li>@Html.ActionLink("Gallery", "Index", "Gallery")</li>
+                                <li>@Html.ActionLink("Contact Us", "Index", "Contact")</li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+            </div>
+        </div>
+
+
+        <div id="body">
+            @RenderBody()
+            @*@Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)*@
+        </div>
+        <div class="container marketing">
+            <!-- FOOTER -->
+            <footer>
+                <!-- Facebook Like button -->
+                <div class="fb-like" data-href="https://www.facebook.com/prem.personalityindia" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                <p class="pull-right"><a href="#">Back to top</a></p>
+                <p><span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span> 2014 Prem Kaushal. &middot; Developed By <a href="#">Subhash Kaushal</a></p>
+                
+            </footer>
+        </div>
+        
+        <script src="~/Scripts/bootstrap.js"></script>
+    </body>
 </html>

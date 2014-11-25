@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d0362a481cbc48169c25f91c350fa1f5" Name="Diagram1">
+        <EntityTypeShape EntityType="PremKaushalModel.Answer" Width="1.5" PointX="4.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PremKaushalModel.Contact" Width="1.5" PointX="0.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PremKaushalModel.Question" Width="1.5" PointX="2.625" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="PremKaushalModel.FK_Answer_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="PremKaushalModel.FK_Question_Contact" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PremKaushalModel.Log" Width="1.5" PointX="2.625" PointY="3.375" />
+        <EntityTypeShape EntityType="PremKaushalModel.Message" Width="1.5" PointX="0.625" PointY="3.375" />
+        <AssociationConnector Association="PremKaushalModel.FK_Message_Contact" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

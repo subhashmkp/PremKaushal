@@ -5,10 +5,10 @@
 
 <h1>Legal Advice <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span></h1>
 <hr/>
-@using (Html.BeginForm("Insert","LegalAdvice",FormMethod.Post))
+@using (Html.BeginForm("iQuestion","LegalAdvice",FormMethod.Post))
 {
     <div class="container">
-    <div class="row">
+        <div class="row">
             <div class="col-lg-6">
                 <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>Required Field</strong></div>
                 <div class="form-group">
@@ -21,14 +21,14 @@
                 <div class="form-group">
                     <label for="InputEmail">Enter Email</label>
                     <div class="input-group">
-                        <input type="email" class="form-control" id="InputEmailFirst" name="InputEmail" placeholder="Enter Email" required>
+                        <input type="email" class="form-control" id="InputEmail" name="InputEmail" placeholder="Enter Email" required>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="InputEmail">Enter Subject</label>
+                    <label for="InputSubject">Enter Subject</label>
                     <div class="input-group">
-                        <input type="email" class="form-control" id="InputSubject" name="InputSubject" placeholder="Enter Subject" required>
+                        <input type="text" class="form-control" id="InputSubject" name="InputSubject" placeholder="Enter Subject" required>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                     </div>
                 </div>
@@ -39,19 +39,44 @@
                         <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="InputContact">Enter Contact Number</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="InputContact" name="InputContact" placeholder="Enter Contact Number">
+                    </div>
+                </div>
                 <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-info pull-right">
             </div>
 
-        <div class="col-lg-5 col-md-push-1">
-            <div class="col-md-12">
-                <div class="alert alert-success">
-                    <strong><span class="glyphicon glyphicon-ok"></span> Success! Message sent.</strong>
-                </div>
-                <div class="alert alert-danger">
-                    <span class="glyphicon glyphicon-remove"></span><strong> Error! Please check all page inputs.</strong>
+            <div class="col-lg-5 col-md-push-1">
+                <div class="col-md-12">
+                    <div class="alert alert-success">
+                        <h4>Enter E-Mail Id to get the answer of previously asked question.</h4>
+                        <div class="form-group">
+                            <label for="InputEmail2">Enter Email</label>
+                            <div class="input-group">
+                                <input type="email" class="form-control" id="InputEmail2" name="InputEmail2" placeholder="Enter Email">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="btnAnswer" data-loading-text="Loading..." class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"  autocomplete="off">
+                            Get Answer
+                        </button>
+                        
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content" id="QA">
+                                    ...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-</div>
+    
 }
+<script src="~/Scripts/LegalAdvice.js"></script>
