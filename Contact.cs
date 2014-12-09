@@ -17,14 +17,16 @@ namespace PremKaushal
         public Contact()
         {
             this.Messages = new HashSet<Message>();
+            this.Questions = new HashSet<Question>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string ContactNo { get; set; }
+        public int Status { get; set; }
     
-        public virtual Question Question { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Question> Questions { get; set; }
     }
 }

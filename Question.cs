@@ -18,8 +18,8 @@ namespace PremKaushal
         public string Subject { get; set; }
         public string Question1 { get; set; }
         public Nullable<int> CId { get; set; }
-        public System.DateTime CreatedDate { get; set; }
         public int Status { get; set; }
+        public System.DateTime CreatedDate { get; set; }
     
         public virtual Answer Answer { get; set; }
         public virtual Contact Contact { get; set; }

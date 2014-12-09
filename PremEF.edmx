@@ -41,6 +41,7 @@
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="200" />
           <Property Name="Email" Type="varchar" MaxLength="400" />
           <Property Name="ContactNo" Type="varchar" MaxLength="20" />
+          <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -50,6 +51,7 @@
           <Property Name="Type" Type="varchar" MaxLength="10" />
           <Property Name="Msg" Type="text" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -58,6 +60,7 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Msg" Type="text" />
           <Property Name="Cid" Type="int" />
+          <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -95,17 +98,21 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Question_Contact">
-          <End Role="Contact" Type="PremKaushalModel.Store.Contact" Multiplicity="1" />
-          <End Role="Question" Type="PremKaushalModel.Store.Question" Multiplicity="0..1" />
+          <End Role="Contact" Type="PremKaushalModel.Store.Contact" Multiplicity="0..1" />
+          <End Role="Question" Type="PremKaushalModel.Store.Question" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Contact">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Question">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="CId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_insertAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Answer" Type="text" Mode="In" />
+          <Parameter Name="Qid" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_insertLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Type" Type="varchar" Mode="In" />
           <Parameter Name="Msg" Type="text" Mode="In" />
@@ -123,22 +130,12 @@
           <Parameter Name="Email" Type="varchar" Mode="In" />
           <Parameter Name="Contact" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="sp_updateLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PremKaushalModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="PremKaushalEntities" p1:LazyLoadingEnabled="true">
-          <EntitySet Name="Answers" EntityType="PremKaushalModel.Answer" />
-          <EntitySet Name="Contacts" EntityType="PremKaushalModel.Contact" />
-          <EntitySet Name="Questions" EntityType="PremKaushalModel.Question" />
-          <AssociationSet Name="FK_Answer_Question" Association="PremKaushalModel.FK_Answer_Question">
-            <End Role="Question" EntitySet="Questions" />
-            <End Role="Answer" EntitySet="Answers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Question_Contact" Association="PremKaushalModel.FK_Question_Contact">
-            <End Role="Contact" EntitySet="Contacts" />
-            <End Role="Question" EntitySet="Questions" />
-          </AssociationSet>
           <FunctionImport Name="sp_insertQuestion">
             <Parameter Name="Name" Mode="In" Type="String" />
             <Parameter Name="Subject" Mode="In" Type="String" />
@@ -146,12 +143,6 @@
             <Parameter Name="Email" Mode="In" Type="String" />
             <Parameter Name="Contact" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="Logs" EntityType="PremKaushalModel.Log" />
-          <EntitySet Name="Messages" EntityType="PremKaushalModel.Message" />
-          <AssociationSet Name="FK_Message_Contact" Association="PremKaushalModel.FK_Message_Contact">
-            <End Role="Contact" EntitySet="Contacts" />
-            <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
           <FunctionImport Name="sp_insertLog">
             <Parameter Name="Type" Mode="In" Type="String" />
             <Parameter Name="Msg" Mode="In" Type="String" />
@@ -162,44 +153,87 @@
             <Parameter Name="Email" Mode="In" Type="String" />
             <Parameter Name="Contact" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_updateLog" />
+          <EntitySet Name="Answers" EntityType="PremKaushalModel.Answer" />
+          <EntitySet Name="Contacts" EntityType="PremKaushalModel.Contact" />
+          <EntitySet Name="Logs" EntityType="PremKaushalModel.Log" />
+          <EntitySet Name="Messages" EntityType="PremKaushalModel.Message" />
+          <EntitySet Name="Questions" EntityType="PremKaushalModel.Question" />
+          <AssociationSet Name="FK_Answer_Question" Association="PremKaushalModel.FK_Answer_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_Contact" Association="PremKaushalModel.FK_Message_Contact">
+            <End Role="Contact" EntitySet="Contacts" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_Contact" Association="PremKaushalModel.FK_Question_Contact">
+            <End Role="Contact" EntitySet="Contacts" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <FunctionImport Name="sp_insertAnswer">
+            <Parameter Name="Answer" Mode="In" Type="String" />
+            <Parameter Name="Qid" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Answer">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Answer1" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="Qid" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Answer1" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Qid" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
           <NavigationProperty Name="Question" Relationship="PremKaushalModel.FK_Answer_Question" FromRole="Answer" ToRole="Question" />
         </EntityType>
         <EntityType Name="Contact">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
-          <Property Name="Email" Type="String" MaxLength="400" Unicode="false" FixedLength="false" />
-          <Property Name="ContactNo" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="Question" Relationship="PremKaushalModel.FK_Question_Contact" FromRole="Contact" ToRole="Question" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Email" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ContactNo" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
           <NavigationProperty Name="Messages" Relationship="PremKaushalModel.FK_Message_Contact" FromRole="Contact" ToRole="Message" />
+          <NavigationProperty Name="Questions" Relationship="PremKaushalModel.FK_Question_Contact" FromRole="Contact" ToRole="Question" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Type" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Msg" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Msg" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Cid" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <NavigationProperty Name="Contact" Relationship="PremKaushalModel.FK_Message_Contact" FromRole="Message" ToRole="Contact" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Subject" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
-          <Property Name="Question1" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="CId" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Subject" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Question1" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CId" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
           <NavigationProperty Name="Answer" Relationship="PremKaushalModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="Contact" Relationship="PremKaushalModel.FK_Question_Contact" FromRole="Question" ToRole="Contact" />
-          <Property Type="Int32" Name="Status" Nullable="false" />
         </EntityType>
         <Association Name="FK_Answer_Question">
-          <End Role="Question" Type="PremKaushalModel.Question" Multiplicity="1" />
-          <End Role="Answer" Type="PremKaushalModel.Answer" Multiplicity="0..1" />
+          <End Type="PremKaushalModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="PremKaushalModel.Answer" Role="Answer" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Question">
               <PropertyRef Name="Id" />
@@ -209,36 +243,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Question_Contact">
-          <End Role="Contact" Type="PremKaushalModel.Contact" Multiplicity="1" />
-          <End Role="Question" Type="PremKaushalModel.Question" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Contact">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Question">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Log">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Type" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Msg" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="Message">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Msg" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="Cid" />
-          <NavigationProperty Name="Contact" Relationship="PremKaushalModel.FK_Message_Contact" FromRole="Message" ToRole="Contact" />
-        </EntityType>
         <Association Name="FK_Message_Contact">
           <End Type="PremKaushalModel.Contact" Role="Contact" Multiplicity="0..1" />
           <End Type="PremKaushalModel.Message" Role="Message" Multiplicity="*" />
@@ -251,48 +255,53 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="FK_Question_Contact">
+          <End Type="PremKaushalModel.Contact" Role="Contact" Multiplicity="0..1" />
+          <End Type="PremKaushalModel.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contact">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="CId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PremKaushalModelStoreContainer" CdmEntityContainer="PremKaushalEntities">
+          <FunctionImportMapping FunctionImportName="sp_insertQuestion" FunctionName="PremKaushalModel.Store.sp_insertQuestion" />
+          <FunctionImportMapping FunctionImportName="sp_insertLog" FunctionName="PremKaushalModel.Store.sp_insertLog" />
+          <FunctionImportMapping FunctionImportName="sp_insertMessage" FunctionName="PremKaushalModel.Store.sp_insertMessage" />
+          <FunctionImportMapping FunctionImportName="sp_updateLog" FunctionName="PremKaushalModel.Store.sp_updateLog" />
           <EntitySetMapping Name="Answers">
             <EntityTypeMapping TypeName="PremKaushalModel.Answer">
               <MappingFragment StoreEntitySet="Answer">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Answer1" ColumnName="Answer" />
-                <ScalarProperty Name="Qid" ColumnName="Qid" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Qid" ColumnName="Qid" />
+                <ScalarProperty Name="Answer1" ColumnName="Answer" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Contacts">
             <EntityTypeMapping TypeName="PremKaushalModel.Contact">
               <MappingFragment StoreEntitySet="Contact">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Questions">
-            <EntityTypeMapping TypeName="PremKaushalModel.Question">
-              <MappingFragment StoreEntitySet="Question">
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="Question1" ColumnName="Question" />
-                <ScalarProperty Name="CId" ColumnName="CId" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_insertQuestion" FunctionName="PremKaushalModel.Store.sp_insertQuestion" />
           <EntitySetMapping Name="Logs">
             <EntityTypeMapping TypeName="PremKaushalModel.Log">
               <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Msg" ColumnName="Msg" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -303,14 +312,26 @@
           <EntitySetMapping Name="Messages">
             <EntityTypeMapping TypeName="PremKaushalModel.Message">
               <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Cid" ColumnName="Cid" />
                 <ScalarProperty Name="Msg" ColumnName="Msg" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_insertLog" FunctionName="PremKaushalModel.Store.sp_insertLog" />
-          <FunctionImportMapping FunctionImportName="sp_insertMessage" FunctionName="PremKaushalModel.Store.sp_insertMessage" />
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="PremKaushalModel.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="Question1" ColumnName="Question" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_insertAnswer" FunctionName="PremKaushalModel.Store.sp_insertAnswer" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -319,7 +340,7 @@
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <Connection>
       <DesignerInfoPropertySet>
-        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="CopyToOutputDirectory" />
       </DesignerInfoPropertySet>
     </Connection>
     <Options>

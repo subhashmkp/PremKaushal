@@ -30,9 +30,9 @@ namespace PremKaushal
     
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<Question> Questions { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Question> Questions { get; set; }
     
         public virtual int sp_insertQuestion(string name, string subject, string question, string email, string contact)
         {
@@ -91,6 +91,24 @@ namespace PremKaushal
                 new ObjectParameter("Contact", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_insertMessage", nameParameter, msgParameter, emailParameter, contactParameter);
+        }
+    
+        public virtual int sp_updateLog()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_updateLog");
+        }
+    
+        public virtual int sp_insertAnswer(string answer, Nullable<int> qid)
+        {
+            var answerParameter = answer != null ?
+                new ObjectParameter("Answer", answer) :
+                new ObjectParameter("Answer", typeof(string));
+    
+            var qidParameter = qid.HasValue ?
+                new ObjectParameter("Qid", qid) :
+                new ObjectParameter("Qid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_insertAnswer", answerParameter, qidParameter);
         }
     }
 }

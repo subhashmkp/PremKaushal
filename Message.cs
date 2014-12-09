@@ -17,6 +17,7 @@ namespace PremKaushal
         public int Id { get; set; }
         public string Msg { get; set; }
         public Nullable<int> Cid { get; set; }
+        public int Status { get; set; }
     
         public virtual Contact Contact { get; set; }
     }

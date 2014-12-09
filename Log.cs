@@ -18,5 +18,6 @@ namespace PremKaushal
         public string Type { get; set; }
         public string Msg { get; set; }
         public System.DateTime CreatedDate { get; set; }
+        public int Status { get; set; }
     }
 }

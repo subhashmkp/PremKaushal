@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "Log";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Log
+                            <small>All the Activities</small>
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="@Url.Action("Index", "Admin")">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-file"></i> Log
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- /.row -->
+                <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Type</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="log">
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+<!-- /#page-wrapper -->
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: 'getLog/',
+            type: 'POST',
+            //data: JSON.stringify(email.data),
+            //data: { 'EMail' : email },
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                //alert(result);
+                var obj;
+                obj = JSON.parse(result);
+                //alert(obj.Subject + obj.Id + obj.Question1);
+                //alert(obj.Answer.Answer1);
+
+                if (obj.length > 0) {
+                    for (var i = 0; i < obj.length; i++) {
+                        var dt = (obj[i].CreatedDate).split('T');
+                        if (obj[i].Type == "Error") {
+                            $('#log').append(
+                                '<tr class="danger"><td>'
+                                + obj[i].Id + '</td><td>'
+                            + obj[i].Type + '</td><td>'
+                            + dt[0] + '</td><td>'
+                            + dt[1] + '</td><td>'
+                            + obj[i].Msg + '</td></tr>'
+                            );
+                        } else {
+                            $('#log').append(
+                                 '<tr class="success"><td>'
+                                 + obj[i].Id + '</td><td>'
+                             + obj[i].Type + '</td><td>'
+                             + dt[0] + '</td><td>'
+                             + dt[1] + '</td><td>'
+                             + obj[i].Msg + '</td></tr>'
+                             );
+                        }
+                    }
+                }
+                //alert('Success');
+            },
+            error: function (xhr, exception) {
+                alert('Error: ' + xhr.statusText);
+                if (xhr.status === 0) {
+                    alert('Not connect.\n Verify Network.');
+                } else if (xhr.status == 404) {
+                    alert('Requested page not found. [404]');
+                } else if (xhr.status == 500) {
+                    alert('Internal Server Error [500].' + exception.toString());
+                } else if (exception === 'parsererror') {
+                    alert('Requested JSON parse failed.');
+                } else if (exception === 'timeout') {
+                    alert('Time out error.');
+                } else if (exception === 'abort') {
+                    alert('Ajax request aborted.');
+                } else {
+                    alert('Uncaught Error.\n' + xhr.responseText);
+                }
+            },
+
+            async: true,
+            processData: false
+        });
+    });
+</script>

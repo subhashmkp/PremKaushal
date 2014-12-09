@@ -36,6 +36,7 @@
     <Property Name="Name" Type="varchar" Nullable="false" MaxLength="200" />
     <Property Name="Email" Type="varchar" MaxLength="400" />
     <Property Name="ContactNo" Type="varchar" MaxLength="20" />
+    <Property Name="Status" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Log">
     <Key>
@@ -45,6 +46,7 @@
     <Property Name="Type" Type="varchar" MaxLength="10" />
     <Property Name="Msg" Type="text" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Message">
     <Key>
@@ -53,6 +55,7 @@
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="Msg" Type="text" />
     <Property Name="Cid" Type="int" />
+    <Property Name="Status" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Question">
     <Key>
@@ -90,17 +93,21 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Question_Contact">
-    <End Role="Contact" Type="PremKaushalModel.Store.Contact" Multiplicity="1" />
-    <End Role="Question" Type="PremKaushalModel.Store.Question" Multiplicity="0..1" />
+    <End Role="Contact" Type="PremKaushalModel.Store.Contact" Multiplicity="0..1" />
+    <End Role="Question" Type="PremKaushalModel.Store.Question" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Contact">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Question">
-        <PropertyRef Name="Id" />
+        <PropertyRef Name="CId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="sp_insertAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Answer" Type="text" Mode="In" />
+    <Parameter Name="Qid" Type="int" Mode="In" />
+  </Function>
   <Function Name="sp_insertLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Type" Type="varchar" Mode="In" />
     <Parameter Name="Msg" Type="text" Mode="In" />
@@ -118,4 +125,5 @@
     <Parameter Name="Email" Type="varchar" Mode="In" />
     <Parameter Name="Contact" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="sp_updateLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
 </Schema>

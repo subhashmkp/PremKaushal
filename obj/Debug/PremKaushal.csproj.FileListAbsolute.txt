@@ -21,10 +21,10 @@ C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremK
 C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Web.WebPages.Razor.xml
 C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\obj\Debug\PremKaushal.dll
 C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\obj\Debug\PremKaushal.pdb
-C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\obj\Debug\PremKaushal.csprojResolveAssemblyReference.cache
 C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Net.Http.Formatting.dll
 C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Web.Http.dll
 C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Net.Http.Formatting.xml
 C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Web.Http.xml
 C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Web.Http.WebHost.dll
 C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\bin\System.Web.Http.WebHost.xml
+C:\Users\Subhash Kaushal\documents\visual studio 2012\Projects\PremKaushal\PremKaushal\obj\Debug\PremKaushal.csprojResolveAssemblyReference.cache
